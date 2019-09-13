@@ -19,7 +19,7 @@ from django.shortcuts import redirect
 
 
 urlpatterns = [
-    path('', lambda request: redirect('api/v1/', permanent=False)),
+    path('', lambda request: redirect('api/v1/solicitudes/', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/v1/', include('solicitudes.urls')),
     path('api-auth/', include('rest_framework.urls')),
