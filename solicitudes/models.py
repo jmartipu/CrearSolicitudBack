@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 
 
 class Solicitud(models.Model):
-    nombre = models.TextField()
+    nombre = models.CharField(max_length=100)
     script = models.TextField()
-    creado_por = models.ForeignKey(User, on_delete=models.CASCADE())
+    descripcion = models.TextField()
+    creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
