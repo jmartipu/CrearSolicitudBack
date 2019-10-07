@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
 class Solicitud(models.Model):
     nombre = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=100, default='sin tipo')
     script = models.TextField()
     descripcion = models.TextField()
     creado_por = models.ForeignKey(User, on_delete=models.CASCADE)

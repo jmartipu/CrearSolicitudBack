@@ -18,6 +18,8 @@ from django.urls import path, include
 from django.shortcuts import redirect
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
+from solicitudes.views import current_user
+
 urlpatterns = [
     path('', lambda request: redirect('api/v1/solicitudes/', permanent=False)),
     path('admin/', admin.site.urls),
@@ -27,4 +29,5 @@ urlpatterns = [
     path(r'api-token-refresh/', refresh_jwt_token),
     path('api/v1/rest-auth/', include('rest_auth.urls')),
     path('api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('current_user/', current_user),
 ]
