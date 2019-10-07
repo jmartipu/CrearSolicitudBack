@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
+import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +26,9 @@ SECRET_KEY = '0z#z6p&q^!1)j1ck0c!-8p_9vg@id4i__7qtax8rvithhn&zqm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SQS_QUEUE_URL = os.environ.get('SQS_QUEUE_URL')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+SQS_QUEUE_URL = os.environ.get('SQS_QUEUE_URL', 'No hay Ruta')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'No hay id')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'No hay pwd')
 
 ALLOWED_HOSTS = []
 
