@@ -34,13 +34,9 @@ class SolicitudSerializer(serializers.ModelSerializer):
             QueueUrl=queue_url,
             DelaySeconds=10,
             MessageAttributes={
-                'Title': {
+                'Tipo': {
                     'DataType': 'String',
-                    'StringValue': 'Titulo Prueba'
-                },
-                'Author': {
-                    'DataType': 'String',
-                    'StringValue': 'Prueba'
+                    'StringValue': self.data['tipo']
                 }
             },
             MessageBody=str(self.data)
