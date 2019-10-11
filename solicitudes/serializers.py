@@ -27,6 +27,7 @@ class SolicitudSerializer(serializers.ModelSerializer):
         model = Solicitud
 
     def save(self, **kwargs):
+        super(SolicitudSerializer, self).save()
         sqs = boto3.client('sqs')
         queue_url = settings.SQS_QUEUE_URL
         response = sqs.send_message(
