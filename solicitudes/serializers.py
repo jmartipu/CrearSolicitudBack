@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -39,7 +41,7 @@ class SolicitudSerializer(serializers.ModelSerializer):
                     'StringValue': self.data['tipo']
                 }
             },
-            MessageBody=str(self.data)
+            MessageBody=json.dumps(self.data)
 
         )
 
