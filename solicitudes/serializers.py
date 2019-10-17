@@ -3,13 +3,14 @@ import json
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Solicitud
+from .models import Solicitud, Herramienta, Aplicacion, TipoPrueba, TipoEjecucion, Ejecutor
 from rest_framework_jwt.settings import api_settings
 from crear_solicitudes_proyecto import settings
 import boto3
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class SolicitudSerializer(serializers.ModelSerializer):
     creado_por = serializers.SlugRelatedField(
@@ -19,11 +20,14 @@ class SolicitudSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'id',
-            'creado_por',
             'nombre',
-            'tipo',
-            'script',
+            'aplicacion',
+            'herramienta',
+            'tipo_prueba',
+            'tipo_ejecucion',
+            'pruebas',
             'descripcion',
+            'creado_por',
             'fecha_creacion',
         )
         model = Solicitud
@@ -36,17 +40,40 @@ class SolicitudSerializer(serializers.ModelSerializer):
             QueueUrl=queue_url,
             DelaySeconds=10,
             MessageAttributes={
-                'Tipo': {
+                'NombreAplicacion': {
                     'DataType': 'String',
-                    'StringValue': self.data['tipo']
+                    'StringValue': Aplicacion.objects.filter(pk=self.data['aplicacion'])[0].nombre
+                },
+                'VersionAplicacion': {
+                    'DataType': 'String',
+                    'StringValue': Aplicacion.objects.filter(pk=self.data['aplicacion'])[0].version
+                },
+                'NombreHerramienta': {
+                    'DataType': 'String',
+                    'StringValue':  Herramienta.objects.filter(pk=self.data['herramienta'])[0].nombre
+                },
+                'NombreEjecutor': {
+                    'DataType': 'String',
+                    'StringValue': Herramienta.objects.filter(pk=self.data['herramienta'])[0].ejecutor.ejecutor
+                },
+                'VersionEjecutor': {
+                    'DataType': 'String',
+                    'StringValue': Herramienta.objects.filter(pk=self.data['herramienta'])[0].ejecutor.version
+                },
+
+                'TipoPrueba': {
+                    'DataType': 'String',
+                    'StringValue': TipoPrueba.objects.filter(pk=self.data['tipo_prueba'])[0].tipo_prueba
+                }
+                ,
+                'TipoEjecucion': {
+                    'DataType': 'String',
+                    'StringValue': TipoEjecucion.objects.filter(pk=self.data['tipo_ejecucion'])[0].tipo_ejecucion
                 }
             },
             MessageBody=json.dumps(self.data)
 
         )
-
-
-
 
 
 class UserSerializer(serializers.ModelSerializer):
