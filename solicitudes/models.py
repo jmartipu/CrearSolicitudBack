@@ -26,6 +26,14 @@ class TipoAplicacion(models.Model):
         return self.tipo_aplicacion
 
 
+class Ejecutor(models.Model):
+    ejecutor = models.CharField(max_length=100)
+    version = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.ejecutor + "-" + self.version
+
+
 class Aplicacion(models.Model):
     nombre = models.CharField(max_length=100)
     tipo_aplicacion = models.ForeignKey(TipoAplicacion, on_delete=models.CASCADE)
@@ -43,7 +51,7 @@ class Herramienta(models.Model):
     nombre = models.CharField(max_length=100)
     tipo_aplicacion = models.ForeignKey(TipoAplicacion, on_delete=models.CASCADE)
     link = models.TextField(blank=True, null=True)
-    version = models.CharField(max_length=100)
+    ejecutor = models.ForeignKey(Ejecutor, on_delete=models.CASCADE, null=True)
     alto_pantalla = models.IntegerField(default=600)
     ancho_pantalla = models.IntegerField(default=800)
     creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -51,13 +59,13 @@ class Herramienta(models.Model):
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre + " " + self.ejecutor.__str__()
 
 
 class Prueba(models.Model):
     nombre = models.CharField(max_length=100)
+    aplicacion = models.ForeignKey(Aplicacion, on_delete=models.CASCADE, null=True)
     tipo_prueba = models.ForeignKey(TipoPrueba, on_delete=models.CASCADE)
-    herramienta = models.ForeignKey(Herramienta, on_delete=models.CASCADE)
     script = models.TextField(blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
     creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
