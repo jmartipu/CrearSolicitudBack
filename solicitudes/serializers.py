@@ -3,13 +3,14 @@ import json
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Solicitud
+from .models import Solicitud, Herramienta
 from rest_framework_jwt.settings import api_settings
 from crear_solicitudes_proyecto import settings
 import boto3
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class SolicitudSerializer(serializers.ModelSerializer):
     creado_por = serializers.SlugRelatedField(
@@ -19,11 +20,14 @@ class SolicitudSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'id',
-            'creado_por',
             'nombre',
-            'tipo',
-            'script',
+            'aplicacion',
+            'herramienta',
+            'tipo_prueba',
+            'tipo_ejecucion',
+            'pruebas',
             'descripcion',
+            'creado_por',
             'fecha_creacion',
         )
         model = Solicitud
@@ -38,15 +42,12 @@ class SolicitudSerializer(serializers.ModelSerializer):
             MessageAttributes={
                 'Tipo': {
                     'DataType': 'String',
-                    'StringValue': self.data['tipo']
+                    'StringValue':  Herramienta.objects.filter(pk=self.data['herramienta'])[0].nombre
                 }
             },
             MessageBody=json.dumps(self.data)
 
         )
-
-
-
 
 
 class UserSerializer(serializers.ModelSerializer):
