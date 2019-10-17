@@ -108,3 +108,7 @@ venv.bak/
 
 #venv
 venv/
+
+#vcode
+pruebas-automaticas-back.code-workspace
+.vscode
