@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Solicitud, Herramienta, Aplicacion, TipoPrueba, TipoEjecucion, Ejecutor
+from .models import Solicitud, Herramienta, Aplicacion, TipoPrueba, TipoEjecucion, Ejecutor, Prueba, TipoAplicacion
 from rest_framework_jwt.settings import api_settings
 from crear_solicitudes_proyecto import settings
 import boto3
@@ -11,8 +11,55 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+class TipoPruebaSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = TipoPrueba
+
+
+class TipoEjecucionSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = TipoEjecucion
+
+
+class TipoAplicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = TipoAplicacion
+
+class EjecutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Ejecutor
+
+
+class AplicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Aplicacion
+
+
+class AplicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Aplicacion
+
+
+class HerramientaSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Herramienta
+
+
+class PruebaSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Prueba
+
 
 class SolicitudSerializer(serializers.ModelSerializer):
+    # pruebas = PruebaSerializer(many=True)
     creado_por = serializers.SlugRelatedField(
         queryset=get_user_model().objects.all(),
         slug_field='username'
@@ -40,6 +87,10 @@ class SolicitudSerializer(serializers.ModelSerializer):
             QueueUrl=queue_url,
             DelaySeconds=10,
             MessageAttributes={
+                'Id': {
+                    'DataType': 'String',
+                    'StringValue': str(self.data['id'])
+                },
                 'NombreAplicacion': {
                     'DataType': 'String',
                     'StringValue': Aplicacion.objects.filter(pk=self.data['aplicacion'])[0].nombre
