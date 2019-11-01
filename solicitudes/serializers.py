@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class TipoPruebaSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
@@ -59,7 +60,11 @@ class PruebaSerializer(serializers.ModelSerializer):
 
 
 class SolicitudSerializer(serializers.ModelSerializer):
-    # pruebas = PruebaSerializer(many=True)
+    pruebas = PruebaSerializer(many=True, read_only=False)
+    tipo_ejecucion = TipoEjecucionSerializer(many=True)
+    herramienta = HerramientaSerializer(many=True)
+    aplicacion = AplicacionSerializer(many=True)
+    tipo_prueba = TipoPruebaSerializer(many=True)
     creado_por = serializers.SlugRelatedField(
         queryset=get_user_model().objects.all(),
         slug_field='username'
