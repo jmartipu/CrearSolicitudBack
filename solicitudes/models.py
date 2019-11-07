@@ -78,10 +78,10 @@ class Prueba(models.Model):
 
 class Solicitud(models.Model):
     nombre = models.CharField(max_length=100)
-    aplicacion = models.ForeignKey(Aplicacion, on_delete=models.CASCADE)
-    herramienta = models.ForeignKey(Herramienta, on_delete=models.CASCADE)
-    tipo_prueba = models.ForeignKey(TipoPrueba, on_delete=models.CASCADE)
-    tipo_ejecucion = models.ForeignKey(TipoEjecucion, on_delete=models.CASCADE)
+    aplicacion = models.ManyToManyField(Aplicacion)
+    herramienta = models.ManyToManyField(Herramienta)
+    tipo_prueba = models.ManyToManyField(TipoPrueba)
+    tipo_ejecucion = models.ManyToManyField(TipoEjecucion)
     pruebas = models.ManyToManyField(Prueba)
     descripcion = models.TextField(blank=True, null=True)
     creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
