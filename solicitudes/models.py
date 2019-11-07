@@ -13,7 +13,7 @@ class TipoPrueba(models.Model):
 
 class TipoEjecucion(models.Model):
     tipo_ejecucion = models.CharField(max_length=100)
-    tipo_prueba = models.ForeignKey(TipoPrueba, on_delete=models.CASCADE)
+    tipo_prueba = models.ForeignKey(TipoPrueba, related_name='tipos_ejecuciones' ,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.tipo_ejecucion
@@ -36,10 +36,10 @@ class Ejecutor(models.Model):
 
 class Aplicacion(models.Model):
     nombre = models.CharField(max_length=100)
-    tipo_aplicacion = models.ForeignKey(TipoAplicacion, on_delete=models.CASCADE)
+    tipo_aplicacion = models.ForeignKey(TipoAplicacion,related_name='aplicaciones', on_delete=models.CASCADE)
     link = models.TextField(blank=True, null=True)
     version = models.CharField(max_length=100)
-    creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+    creado_por = models.ForeignKey(User, related_name='aplicaciones', on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
@@ -49,12 +49,12 @@ class Aplicacion(models.Model):
 
 class Herramienta(models.Model):
     nombre = models.CharField(max_length=100)
-    tipo_aplicacion = models.ForeignKey(TipoAplicacion, on_delete=models.CASCADE)
+    tipo_aplicacion = models.ForeignKey(TipoAplicacion, related_name='herramientas', on_delete=models.CASCADE)
     link = models.TextField(blank=True, null=True)
-    ejecutor = models.ForeignKey(Ejecutor, on_delete=models.CASCADE, null=True)
+    ejecutor = models.ForeignKey(Ejecutor, related_name='herramientas', on_delete=models.CASCADE, null=True)
     alto_pantalla = models.IntegerField(default=600)
     ancho_pantalla = models.IntegerField(default=800)
-    creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+    creado_por = models.ForeignKey(User, related_name='herramientas', on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
@@ -64,11 +64,11 @@ class Herramienta(models.Model):
 
 class Prueba(models.Model):
     nombre = models.CharField(max_length=100)
-    aplicacion = models.ForeignKey(Aplicacion, on_delete=models.CASCADE, null=True)
-    tipo_prueba = models.ForeignKey(TipoPrueba, on_delete=models.CASCADE)
+    aplicacion = models.ForeignKey(Aplicacion, related_name='pruebas', on_delete=models.CASCADE, null=True)
+    tipo_prueba = models.ForeignKey(TipoPrueba, related_name='pruebas', on_delete=models.CASCADE)
     script = models.TextField(blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+    creado_por = models.ForeignKey(User, related_name='pruebas', on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 
@@ -78,13 +78,13 @@ class Prueba(models.Model):
 
 class Solicitud(models.Model):
     nombre = models.CharField(max_length=100)
-    aplicacion = models.ManyToManyField(Aplicacion)
-    herramienta = models.ManyToManyField(Herramienta)
-    tipo_prueba = models.ManyToManyField(TipoPrueba)
-    tipo_ejecucion = models.ManyToManyField(TipoEjecucion)
-    pruebas = models.ManyToManyField(Prueba)
+    aplicacion = models.ForeignKey(Aplicacion, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    herramienta = models.ForeignKey(Herramienta, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    tipo_prueba = models.ForeignKey(TipoPrueba, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    tipo_ejecucion = models.ForeignKey(TipoEjecucion, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    pruebas = models.ForeignKey(Prueba, related_name='solicitudes', on_delete=models.CASCADE, null=True)
     descripcion = models.TextField(blank=True, null=True)
-    creado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+    creado_por = models.ForeignKey(User, related_name='solicitudes', on_delete=models.CASCADE)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_actualizacion = models.DateTimeField(auto_now=True)
 

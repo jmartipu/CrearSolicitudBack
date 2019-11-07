@@ -14,57 +14,51 @@ logger = logging.getLogger(__name__)
 
 class TipoPruebaSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'tipo_prueba')
         model = TipoPrueba
 
 
 class TipoEjecucionSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'tipo_ejecucion', 'tipo_prueba')
         model = TipoEjecucion
 
 
 class TipoAplicacionSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'tipo_aplicacion')
         model = TipoAplicacion
 
 class EjecutorSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'ejecutor', 'version')
         model = Ejecutor
 
 
 class AplicacionSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
-        model = Aplicacion
-
-
-class AplicacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
+        fields = ('id', 'nombre', 'tipo_aplicacion', 'link', 'version', 'creado_por')
         model = Aplicacion
 
 
 class HerramientaSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'nombre', 'tipo_aplicacion', 'link', 'ejecutor', 'alto_pantalla', 'ancho_pantalla', 'creado_por')
         model = Herramienta
 
 
 class PruebaSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'nombre', 'aplicacion', 'tipo_prueba', 'script', 'descripcion', 'creado_por')
         model = Prueba
 
 
 class SolicitudSerializer(serializers.ModelSerializer):
-    pruebas = PruebaSerializer(many=True, read_only=False)
-    tipo_ejecucion = TipoEjecucionSerializer(many=True)
-    herramienta = HerramientaSerializer(many=True)
-    aplicacion = AplicacionSerializer(many=True)
-    tipo_prueba = TipoPruebaSerializer(many=True)
+    pruebas = PruebaSerializer(many=True)
+    tipo_ejecucion = TipoEjecucionSerializer()
+    herramienta = HerramientaSerializer()
+    aplicacion = AplicacionSerializer()
+    tipo_prueba = TipoPruebaSerializer()
     creado_por = serializers.SlugRelatedField(
         queryset=get_user_model().objects.all(),
         slug_field='username'
@@ -80,7 +74,6 @@ class SolicitudSerializer(serializers.ModelSerializer):
             'pruebas',
             'descripcion',
             'creado_por',
-            'fecha_creacion',
         )
         model = Solicitud
 

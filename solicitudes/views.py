@@ -61,7 +61,19 @@ class PruebaViewsets(viewsets.ModelViewSet):
 class SolicitudViewsets(viewsets.ModelViewSet):
     queryset = Solicitud.objects.all()
     serializer_class = SolicitudSerializer
+    
+    #def create(self, request):
+    #    aplicacion = request.data.pop('aplicacion')
+    #    herramienta = request.data.pop('herramienta')
 
+    
+    #tipo_prueba = models.ForeignKey(TipoPrueba, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    #tipo_ejecucion = models.ForeignKey(TipoEjecucion, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    #pruebas = models.ForeignKey(Prueba, related_name='solicitudes', on_delete=models.CASCADE, null=True)
+    #descripcion = models.TextField(blank=True, null=True)
+    #creado_por = models.ForeignKey(User, related_name='solicitudes', on_delete=models.CASCADE)
+    #fecha_creacion = models.DateTimeField(auto_now_add=True)
+    #fecha_actualizacion = models.DateTimeField(auto_now=True)
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAdminUser,)
