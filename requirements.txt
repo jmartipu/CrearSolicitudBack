@@ -1,5 +1,5 @@
 djangorestframework-jwt
-Django==2.2.5
+Django==2.2.21
 djangorestframework==3.10.3
 django-rest-auth==0.9.5
 django-allauth==0.40.0
